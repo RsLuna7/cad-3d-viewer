@@ -38,9 +38,9 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@babylonjs/core": "^9.33.0",
-        "@babylonjs/gui": "^9.33.0",
-        "@babylonjs/loaders": "^9.33.0",
+        "@babylonjs/core": "^9.37.1",
+        "@babylonjs/gui": "^9.37.1",
+        "@babylonjs/loaders": "^9.37.1",
         "comlink": "^4.4.2",
         "occt-import-js": "0.0.23"
     },
