@@ -67,28 +67,28 @@ function untilWorkerDies<T>(call: Promise<T>): Promise<T> {
 
 export class FileTooLargeError extends Error {
     constructor(public sizeBytes: number) {
-        super(`File is ${(sizeBytes / 1024 / 1024).toFixed(1)} MB. Limit is ${MAX_FILE_BYTES / 1024 / 1024} MB.`);
+        super(`文件体积为 ${(sizeBytes / 1024 / 1024).toFixed(1)} MB，超过上限 ${MAX_FILE_BYTES / 1024 / 1024} MB。`);
         this.name = 'FileTooLargeError';
     }
 }
 
 export class UnsupportedFormatError extends Error {
     constructor(public ext: string) {
-        super(`Unsupported file extension ".${ext}". Use .step/.stp, .iges/.igs, or .brep.`);
+        super(`不支持的文件后缀 ".${ext}"。请使用 .step/.stp、.iges/.igs 或 .brep 文件。`);
         this.name = 'UnsupportedFormatError';
     }
 }
 
 export class WorkerFailedError extends Error {
     constructor(detail: string) {
-        super(`The CAD parser worker stopped: ${detail}. Try loading the file again.`);
+        super(`CAD 解析线程已停止：${detail}。请重新尝试加载文件。`);
         this.name = 'WorkerFailedError';
     }
 }
 
 export class OcctReadError extends Error {
     constructor() {
-        super('occt-import-js returned success=false. The file may be corrupt or contain unsupported entities.');
+        super('几何内核解析失败，文件可能已损坏或包含不受支持的实体。');
         this.name = 'OcctReadError';
     }
 }
@@ -96,9 +96,7 @@ export class OcctReadError extends Error {
 export class EmptyGeometryError extends Error {
     constructor(public meshCount: number) {
         super(
-            `Read ${meshCount} part(s) but none contained any geometry. ` +
-                'This usually means the assembly exhausted the 2 GB memory limit the WebAssembly ' +
-                'CAD parser runs under. Try a sub-assembly or a simplified export of the model.',
+            `已读取 ${meshCount} 个零件节点但均无几何网格。这通常是因为大型装配体超出了 WebAssembly 2 GB 内存上限，请尝试加载子装配体或简化导出模型。`,
         );
         this.name = 'EmptyGeometryError';
     }

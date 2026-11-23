@@ -55,10 +55,10 @@ function renderNode(
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = true;
-    checkbox.title = 'Show/hide';
+    checkbox.title = '显示/隐藏';
     // Every checkbox announced an identical "Show/hide" before; naming the
     // part is the whole point of the label for a screen-reader user.
-    checkbox.setAttribute('aria-label', `Show ${node.name || 'unnamed part'}`);
+    checkbox.setAttribute('aria-label', `显示或隐藏 ${node.name || '未命名零件'}`);
     checkbox.addEventListener('click', (e) => e.stopPropagation());
     checkbox.addEventListener('change', () => toggleVisibility(node, checkbox.checked));
     summary.appendChild(checkbox);
@@ -68,8 +68,8 @@ function renderNode(
     const label = document.createElement('button');
     label.type = 'button';
     label.className = 'tree-label';
-    label.textContent = node.name || '(unnamed)';
-    label.title = 'Click to frame';
+    label.textContent = node.name || '(未命名)';
+    label.title = '点击聚焦至该组件';
     label.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -80,7 +80,7 @@ function renderNode(
     const count = document.createElement('span');
     count.className = 'tree-count';
     count.textContent = String(meshes.length);
-    count.title = `${meshes.length} mesh(es) below`;
+    count.title = `包含 ${meshes.length} 个网格`;
     summary.appendChild(count);
 
     for (const child of children) {

@@ -63,7 +63,7 @@ export function decodeName(s: string | undefined | null): string {
 // The set is deliberately narrow — false positives surface as "Part N" in
 // the tree, which is fixable; false negatives leave unreadable glyphs in
 // place, which isn't.
-const ALLOWED_RE = /^[\x20-\x7EЀ-ӿԀ-ԯ\s°§©®]*$/u;
+const ALLOWED_RE = /^[\x20-\x7EЀ-ӿԀ-ԯ\u4E00-\u9FFF\u3000-\u303F\uFF00-\uFFEF\s°§©®×ØΦφ±]*$/u;
 
 export function isReadableName(s: string): boolean {
     return ALLOWED_RE.test(s);

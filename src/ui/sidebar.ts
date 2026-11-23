@@ -87,7 +87,7 @@ export function wireDropZone(
         // idea what actually went wrong.
         const entry = dt.items?.[0]?.webkitGetAsEntry?.();
         if (entry?.isDirectory) {
-            onReject('Folders are not supported. Drop a single CAD file.');
+            onReject('不支持直接拖入文件夹，请拖入单个 CAD 模型文件。');
             return;
         }
 
@@ -95,7 +95,7 @@ export function wireDropZone(
         const file = files?.[0];
         if (!file) return;
         if (files && files.length > 1) {
-            onReject(`Dropped ${files.length} files. Loading the first one, ${file.name}.`);
+            onReject(`检测到 ${files.length} 个文件，仅加载第一个文件：${file.name}`);
         }
         onFile(file, file.name);
     };
@@ -183,16 +183,16 @@ export function renderSelectionInfo(
     face: FaceRef | null,
 ): void {
     if (!face) {
-        refs.selectionInfo.textContent = 'Nothing selected.';
+        refs.selectionInfo.textContent = '未选中任何几何面';
         return;
     }
     refs.selectionInfo.replaceChildren();
     const dl = document.createElement('dl');
     const rows: [string, string][] = [
-        ['Part', face.nodeName || '(unnamed)'],
-        ['Mesh', face.mesh.name],
-        ['Face index', String(face.faceIndex)],
-        ['Submesh', String(face.submeshIndex)],
+        ['所属零件', face.nodeName || '(未命名)'],
+        ['网格名称', face.mesh.name],
+        ['拓扑面序号', String(face.faceIndex)],
+        ['子网格索引', String(face.submeshIndex)],
     ];
     for (const [k, v] of rows) {
         const dt = document.createElement('dt');

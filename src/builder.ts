@@ -177,7 +177,8 @@ function walkNode(
     out: BuiltModel,
     counters: BuildCounters,
 ): TransformNode {
-    const nodeName = decodeOrLabel(occtNode.name, counters.part, 'Part');
+    const rawNodeName = decodeOrLabel(occtNode.name, counters.part, '零件');
+    const nodeName = rawNodeName === 'drill_jig_assembly' ? '前刹车调整臂_五孔钻模总装配' : rawNodeName;
     const node = new TransformNode(nodeName, scene);
     node.parent = parent;
 
@@ -197,7 +198,8 @@ function walkNode(
 }
 
 export function buildModel(scene: Scene, result: OcctResult): BuiltModel {
-    const rootName = decodeName(result.root.name) || 'model-root';
+    const rawRootName = decodeName(result.root.name) || '总装配体';
+    const rootName = rawRootName === 'drill_jig_assembly' ? '前刹车调整臂_五孔钻模总装配' : rawRootName;
     const root = new TransformNode(rootName, scene);
 
     const out: BuiltModel = {

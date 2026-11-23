@@ -74,7 +74,13 @@ export class ExplodeController {
         // assembly.
         const explodeScale = radius * 1.25;
 
-        for (const child of model.topLevel) {
+        const explodeCandidates =
+            model.topLevel.length === 1 && model.topLevel[0]
+                ? (model.topLevel[0].getChildren().filter((c) => !(c instanceof Mesh)) as TransformNode[])
+                : model.topLevel;
+        const targets = explodeCandidates.length >= 2 ? explodeCandidates : model.topLevel;
+
+        for (const child of targets) {
             const childCenter = nodeCentroid(child);
             if (!childCenter) continue;
             const dir = childCenter.subtract(center);

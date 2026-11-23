@@ -36,17 +36,27 @@ const base = import.meta.env.BASE_URL;
 
 const SAMPLES: SampleEntry[] = [
     {
-        label: 'Cube with hole (9 KB)',
+        label: '前刹车调整臂_五孔钻模总装配 (851 KB)',
+        url: `${base}samples/drill-jig-assembly.step`,
+        note: '前刹车调整臂五孔钻模夹具总装配体（20 个零件）',
+    },
+    {
+        label: '00_工件_前刹车调整臂外壳 (149 KB)',
+        url: `${base}samples/workpiece-housing.step`,
+        note: '前刹车调整臂外壳零件模型',
+    },
+    {
+        label: '带孔立方体示例 (9 KB)',
         url: `${base}samples/cube-hole.step`,
         note: 'Formlabs/foxtrot, Apache-2.0',
     },
     {
-        label: 'Motor holder (234 KB)',
+        label: '电机支架示例 (234 KB)',
         url: `${base}samples/motor-holder.step`,
         note: 'TheRobotStudio/SO-ARM100, Apache-2.0',
     },
     {
-        label: 'Servo body (241 KB)',
+        label: '舵机本体示例 (241 KB)',
         url: `${base}samples/servo-body.step`,
         note: 'TheRobotStudio/SO-ARM100, Apache-2.0',
     },
@@ -98,11 +108,11 @@ async function applyLoad(file: File | Blob, name: string): Promise<void> {
     explode = new ExplodeController(model);
     refs.explodeSlider.disabled = explode.partCount < 2;
     if (model.meshes.length === 0) {
-        toast(refs, 'File loaded but no geometry was returned.', 'warn');
+        toast(refs, '文件已加载，但未包含有效几何体。', 'warn');
     } else if (explode.partCount < 2) {
-        toast(refs, `Loaded ${model.meshes.length} mesh(es), ${model.faces.size} face(s). Single part, so Explode is off.`);
+        toast(refs, `已加载 ${model.meshes.length} 个网格，${model.faces.size} 个拓扑面（单零件模型不支持爆炸图）。`);
     } else {
-        toast(refs, `Loaded ${model.meshes.length} mesh(es), ${model.faces.size} face(s).`);
+        toast(refs, `已加载 ${model.meshes.length} 个零件网格，共 ${model.faces.size} 个拓扑面。`);
     }
 }
 
@@ -118,16 +128,16 @@ function reportLoadError(err: unknown): void {
         return;
     }
     console.error(err);
-    toast(refs, `Loading failed: ${(err as Error).message}`, 'error');
+    toast(refs, `加载失败：${(err as Error).message}`, 'error');
 }
 
 async function loadFromFile(file: File | Blob, name: string): Promise<void> {
     if (isLoading) {
-        toast(refs, 'Still loading, please wait.', 'warn');
+        toast(refs, '正在加载模型中，请稍候。', 'warn');
         return;
     }
     isLoading = true;
-    showProgress(refs, `Loading ${name}\u2026`);
+    showProgress(refs, `正在解析 ${name}\u2026`);
     try {
         await applyLoad(file, name);
     } catch (err) {
@@ -143,11 +153,11 @@ async function loadFromUrl(sample: SampleEntry): Promise<void> {
     // second sample click during a fetch fell through, and whichever request
     // finished last won — the label said B while the viewport showed A.
     if (isLoading) {
-        toast(refs, 'Still loading, please wait.', 'warn');
+        toast(refs, '正在加载模型中，请稍候。', 'warn');
         return;
     }
     isLoading = true;
-    showProgress(refs, `Fetching ${sample.label}\u2026`);
+    showProgress(refs, `正在获取 ${sample.label}\u2026`);
     try {
         const response = await fetch(sample.url);
         if (!response.ok) {
@@ -155,7 +165,7 @@ async function loadFromUrl(sample: SampleEntry): Promise<void> {
         }
         const blob = await response.blob();
         const name = sample.url.split('/').pop() ?? 'sample.step';
-        showProgress(refs, `Loading ${name}\u2026`);
+        showProgress(refs, `正在解析 ${name}\u2026`);
         await applyLoad(blob, name);
     } catch (err) {
         reportLoadError(err);
@@ -201,7 +211,7 @@ refs.btnScreenshot.addEventListener('click', async () => {
     try {
         await downloadScreenshot(engine, camera, currentName);
     } catch (err) {
-        toast(refs, `Screenshot failed: ${(err as Error).message}`, 'error');
+        toast(refs, `截图失败：${(err as Error).message}`, 'error');
     }
 });
 
@@ -210,7 +220,7 @@ refs.btnMeasure.addEventListener('click', () => {
     measure.setEnabled(next);
     refs.btnMeasure.classList.toggle('is-active', next);
     if (next) {
-        toast(refs, 'Click two surface points to measure.');
+        toast(refs, '请在模型表面依次点击两个点以测量距离。');
     }
 });
 

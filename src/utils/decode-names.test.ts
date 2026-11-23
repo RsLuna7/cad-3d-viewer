@@ -29,11 +29,11 @@ describe('decodeName', () => {
 });
 
 describe('isReadableName', () => {
-    it.each(['Part 1', 'Кронштейн', 'Кронштейн 90°', 'Вал §2'])('accepts %s', (name) => {
+    it.each(['Part 1', 'Кронштейн', 'Кронштейн 90°', 'Вал §2', '01_夹具体底座', '前刹车调整臂_五孔钻模总装配'])('accepts %s', (name) => {
         expect(isReadableName(name)).toBe(true);
     });
 
-    it.each(['m린 G-2', '部品', 'Part²'])('rejects mojibake %s', (name) => {
+    it.each(['m린 G-2', 'Part²'])('rejects mojibake %s', (name) => {
         expect(isReadableName(name)).toBe(false);
     });
 });
